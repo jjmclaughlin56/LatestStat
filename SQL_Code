@@ -1,0 +1,14 @@
+SELECT 
+ya_memberidName
+,ya_metrictypeidName
+,ya_enddate
+,ya_value
+FROM BluePoint_MSCRM.[dbo].[ya_membermetric] t1
+WHERE EXISTS(SELECT 1
+FROM BluePoint_MSCRM.[dbo].[ya_membermetric] t2
+WHERE t2.ya_memberidName = t1.ya_memberidName
+AND t2.ya_metrictypeidName = t1.ya_metrictypeidName
+GROUP BY t2.ya_memberidName
+,t2.ya_metrictypeidName
+HAVING t1.ya_enddate = MAX(t2.ya_enddate))
+AND ya_metrictypeidName = 'CMI'
